@@ -1,0 +1,1562 @@
+/* 
+   BPSU MAIN CAMPUS INTERACTIVE 2D SCHEMATIC MAP — STYLESHEET
+*/
+
+:root {
+  /* Official BPSU University Color Palette */
+  --bpsu-maroon: #6b141a;
+  --bpsu-maroon-dark: #4a0d12;
+  --bpsu-maroon-light: #881921;
+  --bpsu-maroon-glow: rgba(107, 20, 26, 0.45);
+
+  --bpsu-gold: #f59e0b;
+  --bpsu-gold-hover: #d97706;
+  --bpsu-gold-light: #fef3c7;
+  --bpsu-gold-glow: rgba(245, 158, 11, 0.45);
+
+  /* Dark Campus Pathway & Slate Theme */
+  --bg-dark: #18181b;
+  /* Zinc-900 (Main Campus Pathway Ground) */
+  --bg-panel: #202023;
+  /* Dark Slate Control Panel */
+  --bg-panel-translucent: rgba(32, 32, 35, 0.94);
+  --bg-card: #27272a;
+  /* Zinc-800 Card Base */
+  --bg-card-hover: #323236;
+  --bg-input: #121214;
+  /* Zinc-950 Input Fields */
+  --border-subtle: #3f3f46;
+  /* Zinc-700 Borders */
+  --border-focus: #f59e0b;
+
+  /* Typography Colors */
+  --text-main: #f4f4f5;
+  /* Zinc-100 High Contrast Text */
+  --text-secondary: #a1a1aa;
+  /* Zinc-400 */
+  --text-muted: #71717a;
+  /* Zinc-500 */
+  --text-dark: #18181b;
+  /* Zinc-900 for Light Building Blocks */
+
+  /* Building Block Fills */
+  --bldg-fill-default: #f4f4f5;
+  /* Clean Modern Zinc-100 */
+  --bldg-stroke-default: #3f3f46;
+  --bldg-fill-hover: #ffffff;
+  --bldg-fill-selected: #fef08a;
+  --zone-fill: #fde047;
+  /* Vibrant Caution Yellow for Evacuation Zones 1-4 */
+  --zone-stroke: #ca8a04;
+
+  /* Navigation Path & Status Colors */
+  --route-red: #ef4444;
+  --route-red-glow: rgba(239, 68, 68, 0.75);
+  --pin-start: #22c55e;
+  --pin-dest: #ef4444;
+  --walkway-asphalt: #27272a;
+  --walkway-line: #3f3f46;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 16px var(--bpsu-gold-glow);
+
+  /* Layout dimensions */
+  --header-height: 64px;
+  --sidebar-width: 400px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+/* 
+   CSS RESET & BASE STYLING
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bpsu-gold);
+}
+
+/* 
+   TOP APPLICATION HEADER
+*/
+.app-header {
+  position: relative;
+  z-index: 50;
+  height: var(--header-height);
+  width: 100%;
+  background: linear-gradient(90deg, var(--bpsu-maroon-dark) 0%, var(--bpsu-maroon) 50%, #4a0d12 100%);
+  border-bottom: 2px solid var(--bpsu-gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bpsu-crest-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.bpsu-crest-badge:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.edition-badge {
+  background: var(--bpsu-gold);
+  color: var(--bpsu-maroon-dark);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--bpsu-gold-light);
+  opacity: 0.88;
+  white-space: nowrap;
+}
+
+.header-status-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+.status-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e4e4e7;
+  letter-spacing: 0.3px;
+}
+
+.btn-icon-header {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: none;
+  /* Shown on small screens */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon-header:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--bpsu-gold);
+}
+
+@keyframes pulseDot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+/*
+   APP MAIN CONTAINER (SIDEBAR + MAP VIEWPORT)
+*/
+.app-main {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - var(--header-height));
+  display: flex;
+  overflow: hidden;
+}
+
+/*
+   LEFT SIDEBAR / CONTROL PANEL
+*/
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--bg-panel-translucent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 30;
+  box-shadow: var(--shadow-lg);
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease;
+}
+
+.panel-section:focus-within {
+  border-color: var(--border-focus);
+}
+
+.section-label,
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bpsu-gold);
+}
+
+/* 1. Search Bar & Suggestions Dropdown */
+.search-section {
+  position: relative;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 36px 10px 12px;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input-wrapper input:focus {
+  border-color: var(--bpsu-gold);
+  box-shadow: 0 0 0 2px var(--bpsu-gold-glow);
+}
+
+.search-input-wrapper input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: none;
+  line-height: 1;
+  padding: 2px;
+}
+
+.btn-clear-search:hover {
+  color: var(--text-main);
+}
+
+/* Autocomplete suggestions dropdown */
+.search-results-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 280px;
+  background: var(--bg-panel);
+  border: 1px solid var(--bpsu-gold);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.search-result-item {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover,
+.search-result-item.highlighted {
+  background-color: var(--bg-card-hover);
+}
+
+.result-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-bldg-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #ffffff;
+}
+
+.result-bldg-name mark {
+  background: rgba(245, 158, 11, 0.35);
+  color: var(--bpsu-gold-light);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.result-badge {
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--bpsu-maroon);
+  color: #ffffff;
+}
+
+.result-badge.badge-evac {
+  background: var(--zone-fill);
+  color: #713f12;
+  font-weight: 700;
+}
+
+.result-bldg-alias {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Quick Category Filter Chips */
+.category-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--bpsu-gold);
+  color: var(--text-main);
+}
+
+.chip.active {
+  background: var(--bpsu-gold);
+  border-color: var(--bpsu-gold);
+  color: var(--bpsu-maroon-dark);
+  font-weight: 700;
+}
+
+.chip-evac {
+  border-color: rgba(250, 204, 21, 0.4);
+}
+
+.chip-evac.active {
+  background: var(--zone-fill);
+  border-color: var(--zone-stroke);
+  color: #713f12;
+}
+
+/* 2. ROUTE PLANNING SECTION */
+.route-select-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.select-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  transition: border-color 0.2s ease;
+}
+
+.select-field:focus-within {
+  border-color: var(--bpsu-gold);
+}
+
+.field-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.start-icon {
+  background: var(--pin-start);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.dest-icon {
+  background: var(--pin-dest);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.field-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.field-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.field-content select {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 0.86rem;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.field-content select option {
+  background: var(--bg-panel);
+  color: var(--text-main);
+}
+
+.btn-swap-locations {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--bpsu-gold);
+  color: var(--bpsu-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.btn-swap-locations:hover {
+  background: var(--bpsu-gold);
+  color: var(--bpsu-maroon-dark);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Action Buttons Grid */
+.action-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.btn-primary-action,
+.btn-evacuation-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary-action {
+  background: linear-gradient(135deg, var(--bpsu-maroon) 0%, #881921 100%);
+  color: #ffffff;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.btn-primary-action:hover {
+  background: linear-gradient(135deg, #881921 0%, #a21c27 100%);
+  border-color: var(--bpsu-gold);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.btn-primary-action:active {
+  transform: translateY(0);
+}
+
+.btn-evacuation-action {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #422006;
+  border: 1px solid #fef08a;
+}
+
+.btn-evacuation-action:hover {
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+  box-shadow: 0 0 16px rgba(234, 179, 8, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-clear-route {
+  background: transparent;
+  border: 1px dashed var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-route:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* 3. ROUTE SUMMARY CARD */
+.route-summary-card {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: linear-gradient(180deg, rgba(39, 39, 42, 0.9) 0%, var(--bg-card) 100%);
+  animation: fadeIn 0.3s ease;
+}
+
+.summary-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.summary-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--route-red);
+  letter-spacing: 0.5px;
+}
+
+.summary-badge.badge-evac-active {
+  color: #eab308;
+}
+
+.summary-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.btn-close-card {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-close-card:hover {
+  color: var(--text-main);
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.metric-box {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.metric-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.4px;
+}
+
+.metric-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--bpsu-gold);
+  margin-top: 2px;
+}
+
+.evacuation-banner {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  animation: pulseEvacBanner 2s infinite ease-in-out;
+}
+
+.evac-banner-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.evac-banner-content strong {
+  display: block;
+  font-size: 0.8rem;
+  color: #fef08a;
+  letter-spacing: 0.4px;
+}
+
+.evac-banner-content p {
+  font-size: 0.74rem;
+  color: #fef9c3;
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+@keyframes pulseEvacBanner {
+
+  0%,
+  100% {
+    border-color: rgba(234, 179, 8, 0.8);
+  }
+
+  50% {
+    border-color: rgba(234, 179, 8, 0.3);
+  }
+}
+
+/* Turn-by-Turn Navigation */
+.turn-directions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.directions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.directions-header h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.dijkstra-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.directions-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.direction-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-main);
+  transition: all 0.15s ease;
+}
+
+.direction-step:hover {
+  border-color: var(--bpsu-gold);
+}
+
+.step-icon-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--bpsu-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-distance {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* 4. BUILDING DETAILS CARD */
+.building-details-card {
+  border-color: var(--bpsu-gold);
+  animation: slideInUp 0.25s ease;
+}
+
+.details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.details-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.details-category-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: var(--bpsu-maroon);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.details-code-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--bpsu-gold);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bldg-official-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.bldg-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.bldg-rooms {
+  font-size: 0.78rem;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  line-height: 1.45;
+}
+
+.bldg-rooms strong {
+  color: var(--bpsu-gold);
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.bldg-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-set-loc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.btn-set-loc:hover {
+  border-color: var(--bpsu-gold);
+  background: var(--bg-card-hover);
+}
+
+.dot-start,
+.dot-dest {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-start {
+  background: var(--pin-start);
+}
+
+.dot-dest {
+  background: var(--pin-dest);
+}
+
+.legend-body.collapsed {
+  display: none !important;
+}
+
+.bldg-evac-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: #fef08a;
+}
+
+.evac-icon {
+  font-size: 1rem;
+}
+
+/* 5. DSA EDUCATIONAL SECTION */
+.dsa-educational-section {
+  background: var(--bg-input);
+  border-style: dashed;
+}
+
+.dsa-summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.dsa-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dsa-summary-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.dsa-badge {
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bpsu-maroon);
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.dsa-content {
+  margin-top: 10px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dsa-content ul {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dsa-content strong {
+  color: var(--bpsu-gold-light);
+}
+
+/*
+   INTERACTIVE MAP VIEWPORT (SVG CANVAS & CONTROLS)
+*/
+.map-viewport {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  background: var(--bg-dark);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+}
+
+.map-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* Inline SVG element */
+.campus-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-origin: 0 0;
+}
+
+/* Floating Zoom & Map Controls */
+.map-floating-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+}
+
+.map-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel-translucent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-btn:hover {
+  background: var(--bpsu-maroon);
+  border-color: var(--bpsu-gold);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+.map-btn:active {
+  transform: scale(0.96);
+}
+
+/* Campus Compass */
+.campus-compass {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.compass-needle {
+  width: 44px;
+  height: 44px;
+  background: var(--bg-panel-translucent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--bpsu-gold);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.compass-n {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ef4444;
+  line-height: 1;
+}
+
+.needle-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 8px solid #ef4444;
+  margin-top: 2px;
+}
+
+/* Mobile Drawer Handle */
+.mobile-drawer-toggle {
+  display: none;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bpsu-maroon);
+  border: 1px solid var(--bpsu-gold);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 25;
+  box-shadow: var(--shadow-lg);
+  align-items: center;
+  gap: 8px;
+}
+
+/* Campus Legend HUD */
+.map-legend-hud {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: var(--bg-panel-translucent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+  max-width: 210px;
+  transition: all 0.25s ease;
+}
+
+.legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.legend-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--bpsu-gold);
+  letter-spacing: 0.5px;
+}
+
+.legend-collapse-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.legend-body {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.swatch-academic {
+  background: var(--bldg-fill-default);
+}
+
+.swatch-admin {
+  background: #e4e4e7;
+  border-left: 3px solid var(--bpsu-maroon);
+}
+
+.swatch-evac {
+  background: var(--zone-fill);
+  border-color: var(--zone-stroke);
+}
+
+.swatch-corridor {
+  background: var(--walkway-asphalt);
+}
+
+.swatch-route {
+  background: var(--route-red);
+  box-shadow: 0 0 6px var(--route-red);
+}
+
+/* ==========================================================================
+   SVG MAP ELEMENTS STYLING (<rect>, <text>, <polyline>, <g>)
+   ========================================================================== */
+
+/* Pedestrian Walkway Corridors */
+.walkway-corridor-spine,
+.walkway-cross-corridor {
+  fill: var(--walkway-asphalt);
+  stroke: var(--walkway-line);
+  stroke-width: 1.5;
+  transition: fill 0.2s ease;
+}
+
+.corridor-centerline {
+  stroke: #52525b;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  fill: none;
+  opacity: 0.5;
+}
+
+/* Building Blocks */
+.building-block {
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+}
+
+.bldg-rect,
+.bldg-polygon {
+  fill: var(--bldg-fill-default);
+  stroke: var(--bldg-stroke-default);
+  stroke-width: 2;
+  filter: url(#buildingShadow);
+  transition: all 0.2s ease;
+}
+
+/* Typography on Buildings */
+.bldg-text-code {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  fill: var(--bpsu-maroon);
+  text-anchor: middle;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bldg-text-sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 8px;
+  fill: #52525b;
+  text-anchor: middle;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Special Buildings */
+.bldg-csg {
+  stroke-left: 6px solid var(--bpsu-maroon);
+}
+
+.bldg-court {
+  fill: #0d9488;
+  stroke: #14b8a6;
+}
+
+.court-text {
+  fill: #ffffff !important;
+}
+
+.court-sub {
+  fill: #ccfbf1 !important;
+}
+
+/* Evacuation Zones (1-4) Yellow Styling */
+.bldg-zone {
+  fill: var(--zone-fill) !important;
+  stroke: var(--zone-stroke) !important;
+  stroke-width: 2.5;
+}
+
+.zone-text {
+  fill: #713f12 !important;
+  font-weight: 800;
+}
+
+.zone-sub {
+  fill: #854d0e !important;
+  font-weight: 700;
+}
+
+/* Building Hover & Focus States */
+.building-block:hover .bldg-rect,
+.building-block:hover .bldg-polygon {
+  fill: var(--bldg-fill-hover);
+  stroke: var(--bpsu-gold);
+  stroke-width: 3.5;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+}
+
+.building-block:hover {
+  transform: translateY(-2px);
+}
+
+/* Building Selected State */
+.building-block.selected .bldg-rect,
+.building-block.selected .bldg-polygon {
+  stroke: var(--bpsu-gold) !important;
+  stroke-width: 4 !important;
+  filter: url(#selectedGlow) !important;
+}
+
+/* Building Start / Dest Highlights */
+.building-block.is-start .bldg-rect {
+  stroke: var(--pin-start) !important;
+  stroke-width: 4 !important;
+  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.8)) !important;
+}
+
+.building-block.is-dest .bldg-rect {
+  stroke: var(--pin-dest) !important;
+  stroke-width: 4 !important;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)) !important;
+}
+
+/* Evacuation Target Highlight Animation */
+.building-block.evacuation-target .bldg-rect {
+  animation: evacBlink 1s infinite alternate;
+}
+
+@keyframes evacBlink {
+  from {
+    stroke: #eab308;
+    stroke-width: 4;
+    filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.6));
+  }
+
+  to {
+    stroke: #ef4444;
+    stroke-width: 6;
+    filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.95));
+  }
+}
+
+/* Route Walking Path Animation */
+.route-inner-polyline {
+  animation: dashMove 1.2s linear infinite;
+}
+
+@keyframes dashMove {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Marker Ripple Rings */
+.marker-pulse-ring {
+  animation: pulseMarker 1.8s infinite ease-out;
+  transform-origin: center;
+}
+
+@keyframes pulseMarker {
+  0% {
+    r: 16;
+    opacity: 0.9;
+  }
+
+  100% {
+    r: 36;
+    opacity: 0;
+  }
+}
+
+/* Utility Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+   RESPONSIVE DESIGN (MOBILE max-width: 768px) — CLEAN STACKED LAYOUT
+*/
+@media (max-width: 768px) {
+
+  .btn-icon-header,
+  .mobile-drawer-toggle {
+    display: none !important;
+  }
+
+  html,
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  .app-main {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: calc(100vh - var(--header-height));
+    overflow-y: visible !important;
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  /* Flatten sidebar wrapper on mobile so cards become direct flex items */
+  .sidebar {
+    display: contents !important;
+  }
+
+  /* 1. Search Buildings, Aliases & Rooms card */
+  .search-section {
+    order: 1 !important;
+    width: 100% !important;
+  }
+
+  /* 2. Plan Campus Route card */
+  .routing-section {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  /* 3. Interactive SVG Map container (clean 520px height) */
+  .map-viewport {
+    order: 3 !important;
+    width: 100% !important;
+    height: 520px !important;
+    min-height: 520px !important;
+    flex: none !important;
+    position: relative !important;
+    border: 1.5px solid var(--bpsu-gold) !important;
+    border-radius: var(--radius-md) !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-md) !important;
+  }
+
+  /* 4. Shortest Route / Route Summary card */
+  #routeSummaryCard {
+    order: 4 !important;
+    width: 100% !important;
+  }
+
+  /* 5. Building Details card */
+  #buildingDetailsCard {
+    order: 5 !important;
+    width: 100% !important;
+  }
+
+  .brand-title {
+    font-size: 1rem;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .status-text {
+    display: none;
+  }
+
+  .map-floating-controls {
+    top: 10px;
+    right: 10px;
+  }
+
+  .map-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .map-legend-hud {
+    bottom: 10px;
+    right: 10px;
+    max-width: 175px;
+    padding: 6px 10px;
+  }
+}
