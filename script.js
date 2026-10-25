@@ -123,13 +123,10 @@ function drawMap() {
   if (g) g.setAttribute('transform', `translate(${panX}, ${panY}) scale(${currentScale})`);
 }
 
-function centerOnCoords(x, y, zoom = 1.3) {
-  const vp = document.getElementById('mapViewport');
-  if (!vp) return;
-  const rect = vp.getBoundingClientRect();
-  currentScale = zoom;
-  panX = (rect.width / 2) - (x * (rect.width / 1000));
-  panY = (rect.height / 2) - (y * (rect.height / 1650));
+function resetMapCenter() {
+  currentScale = 1;
+  panX = 0;
+  panY = 0;
   drawMap();
 }
 
@@ -150,7 +147,7 @@ function drawRouteLine(path, isEvac = false) {
   const [sX, sY] = nodeCoords[path[0]], [dX, dY] = nodeCoords[path[path.length - 1]];
   if (sPin) { sPin.setAttribute('transform', `translate(${sX},${sY})`); sPin.style.opacity = '1'; }
   if (dPin) { dPin.setAttribute('transform', `translate(${dX},${dY})`); dPin.style.opacity = '1'; }
-  centerOnCoords((sX + dX) / 2, (sY + dY) / 2, 1.15);
+  resetMapCenter();
 }
 
 function selectBuilding(id) {
@@ -166,8 +163,6 @@ function selectBuilding(id) {
   document.getElementById('bldgDescText').textContent = bldg.desc;
   document.getElementById('bldgRoomsText').innerHTML = `<strong>KEY ROOMS & OFFICES:</strong> ${bldg.rooms}`;
   document.getElementById('bldgEvacText').textContent = `Nearest Evacuation: ${campusBuildings[bldg.evac]?.name || bldg.evac}`;
-  document.getElementById('buildingDetailsCard').hidden = false;
-  centerOnCoords(nodeCoords[id][0], nodeCoords[id][1], 1.4);
 }
 
 function renderRouteUI(start, end, isEvac = false) {
@@ -192,7 +187,6 @@ function renderRouteUI(start, end, isEvac = false) {
     li.innerHTML = `<span class="step-icon-badge">${idx + 1}</span><div class="step-content"><span>${s}</span></div>`;
     dList.appendChild(li);
   });
-  document.getElementById('routeSummaryCard').hidden = false;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -216,9 +210,16 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.getElementById('clearRouteBtn').onclick = () => {
-    activeRoute = null; drawRouteLine(null);
-    document.getElementById('routeSummaryCard').hidden = true;
-    currentScale = 1; panX = panY = 0; drawMap();
+    activeRoute = null;
+    drawRouteLine(null);
+    document.getElementById('routeDistanceText').textContent = '0 m';
+    document.getElementById('routeTimeText').textContent = '0 min';
+    document.getElementById('routeSegmentsText').textContent = '0 steps';
+    document.getElementById('routeTypeBadge').textContent = 'SHORTEST ROUTE';
+    document.getElementById('routeFromToText').textContent = 'Route Summary';
+    document.getElementById('evacuationAlertBanner').hidden = true;
+    document.getElementById('directionsList').innerHTML = '<li class="direction-step"><div class="step-content"><span>Select a Start and Destination above.</span></div></li>';
+    resetMapCenter();
   };
 
   document.getElementById('swapLocationsBtn').onclick = () => {
@@ -228,8 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('setAsStartBtn').onclick = () => { if (selectedBldg) sSel.value = selectedBldg; };
   document.getElementById('setAsDestBtn').onclick = () => { if (selectedBldg) dSel.value = selectedBldg; };
-  document.getElementById('closeDetailsBtn').onclick = () => document.getElementById('buildingDetailsCard').hidden = true;
-  document.getElementById('closeSummaryBtn').onclick = () => document.getElementById('routeSummaryCard').hidden = true;
 
   // Search Autocomplete
   const sInput = document.getElementById('campusSearchInput'), sList = document.getElementById('searchResultsList'), cBtn = document.getElementById('clearSearchBtn');
