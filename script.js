@@ -1,15 +1,11 @@
 /**
  * BPSU Main Campus Interactive 2D Navigation Engine (BS Data Science Project)
- * ==========================================================================
  * SECTION 1: GRAPH DATA & CAMPUS DIRECTORY (Adjacency List & Buildings)
  * SECTION 2: SHORTEST PATH ALGORITHM (Dijkstra Implementation & Route Steps)
  * SECTION 3: MAP & UI CONTROLS (SVG Pan/Zoom, Search, Evacuation Drill)
- * ==========================================================================
  */
 
-// =============================================================================
 // SECTION 1: GRAPH DATA & CAMPUS DIRECTORY
-// =============================================================================
 const campusBuildings = {
   GATE: { name: 'East Gate', desc: 'Main Campus Entrance & Guardhouse', rooms: 'Security Desk, RFID Turnstiles, Visitor Log Kiosk', evac: 'ZONE4', aliases: ['gate', 'entrance', 'exit', 'east gate'] },
   HM_LAB: { name: 'HM Lab', desc: 'Hospitality Management Kitchen Facility', rooms: 'Commercial Hot Kitchen, Cold Prep, Dining Hall', evac: 'ZONE4', aliases: ['hm', 'food lab', 'hrm', 'kitchen'] },
@@ -43,19 +39,19 @@ const campusBuildings = {
 };
 
 const nodeCoords = {
-  GATE:[240,1565], HM_LAB:[165,1435], CSG:[165,1312], ADMIN:[165,1202], GAZEBO:[375,1445], COURT:[560,1415], CAHS_ANNEX:[830,1435],
-  SHOP1:[367,1220], SHOP2:[457,1220], LIBRARY:[570,1220], ZONE4:[670,1230], CAHS:[830,1240], AUTOMOTIVE:[165,970], ZONE3:[430,970],
-  MEDINA:[610,970], OSA:[830,970], COAS:[165,680], CCST:[500,675], CAD:[830,680], CTEC:[165,425], NSTP:[490,502], CBA:[495,442],
-  ZONE2:[500,327], NCEA:[830,425], ARCH:[830,277], ZONE1:[500,210], OLD_CEA:[500,127], HOSTEL:[500,50], MEDICINE:[830,160],
-  D_GATE:[240,1530], D_HM_LAB:[250,1435], D_CSG:[250,1300], D_ADMIN:[250,1200], D_GAZEBO:[330,1445], D_COURT:[670,1415],
-  D_CAHS_ANNEX:[750,1435], D_SHOP1:[367,1120], D_SHOP2:[457,1120], D_LIBRARY:[570,1120], D_ZONE4:[700,1230], D_CAHS:[750,1240],
-  D_AUTOMOTIVE:[250,970], D_ZONE3:[330,970], D_MEDINA:[670,970], D_OSA:[750,970], D_COAS:[250,680], D_CCST:[330,675],
-  D_CAD:[750,680], D_CTEC:[250,425], D_NSTP:[490,535], D_CBA:[380,442], D_ZONE2:[330,327], D_NCEA:[750,425],
-  D_ARCH:[750,277], D_ZONE1:[330,210], D_OLD_CEA:[330,127], D_HOSTEL:[330,50], D_MEDICINE:[750,160]
+  GATE: [240, 1565], HM_LAB: [165, 1435], CSG: [165, 1312], ADMIN: [165, 1202], GAZEBO: [375, 1445], COURT: [560, 1415], CAHS_ANNEX: [830, 1435],
+  SHOP1: [367, 1220], SHOP2: [457, 1220], LIBRARY: [570, 1220], ZONE4: [670, 1230], CAHS: [830, 1240], AUTOMOTIVE: [165, 970], ZONE3: [430, 970],
+  MEDINA: [610, 970], OSA: [830, 970], COAS: [165, 680], CCST: [500, 675], CAD: [830, 680], CTEC: [165, 425], NSTP: [490, 502], CBA: [495, 442],
+  ZONE2: [500, 327], NCEA: [830, 425], ARCH: [830, 277], ZONE1: [500, 210], OLD_CEA: [500, 127], HOSTEL: [500, 50], MEDICINE: [830, 160],
+  D_GATE: [240, 1530], D_HM_LAB: [250, 1435], D_CSG: [250, 1300], D_ADMIN: [250, 1200], D_GAZEBO: [330, 1445], D_COURT: [670, 1415],
+  D_CAHS_ANNEX: [750, 1435], D_SHOP1: [367, 1120], D_SHOP2: [457, 1120], D_LIBRARY: [570, 1120], D_ZONE4: [700, 1230], D_CAHS: [750, 1240],
+  D_AUTOMOTIVE: [250, 970], D_ZONE3: [330, 970], D_MEDINA: [670, 970], D_OSA: [750, 970], D_COAS: [250, 680], D_CCST: [330, 675],
+  D_CAD: [750, 680], D_CTEC: [250, 425], D_NSTP: [490, 535], D_CBA: [380, 442], D_ZONE2: [330, 327], D_NCEA: [750, 425],
+  D_ARCH: [750, 277], D_ZONE1: [330, 210], D_OLD_CEA: [330, 127], D_HOSTEL: [330, 50], D_MEDICINE: [750, 160]
 };
 
-const wSpine = [50,88,127,167,210,252,327,425,442,535,675,680,820,970,1120,1200,1300,1435,1445,1530].map(y => { nodeCoords['W'+y] = [290, y]; return 'W'+y; });
-const eSpine = [50,88,127,160,167,210,252,277,327,425,442,535,675,680,820,970,1120,1230,1240,1300,1415,1435,1530].map(y => { nodeCoords['E'+y] = [710, y]; return 'E'+y; });
+const wSpine = [50, 88, 127, 167, 210, 252, 327, 425, 442, 535, 675, 680, 820, 970, 1120, 1200, 1300, 1435, 1445, 1530].map(y => { nodeCoords['W' + y] = [290, y]; return 'W' + y; });
+const eSpine = [50, 88, 127, 160, 167, 210, 252, 277, 327, 425, 442, 535, 675, 680, 820, 970, 1120, 1230, 1240, 1300, 1415, 1435, 1530].map(y => { nodeCoords['E' + y] = [710, y]; return 'E' + y; });
 
 const campusGraph = {};
 for (const k in nodeCoords) campusGraph[k] = {};
@@ -66,19 +62,17 @@ function addEdge(u, v) {
 }
 Object.keys(campusBuildings).forEach(b => addEdge(b, 'D_' + b));
 [
-  ['D_GATE','W1530'],['D_HM_LAB','W1435'],['D_CSG','W1300'],['D_ADMIN','W1200'],['D_GAZEBO','W1445'],['D_COURT','E1415'],
-  ['D_CAHS_ANNEX','E1435'],['D_SHOP1','W1120'],['D_SHOP2','W1120'],['D_LIBRARY','E1120'],['D_ZONE4','E1230'],['D_CAHS','E1240'],
-  ['D_AUTOMOTIVE','W970'],['D_ZONE3','W970'],['D_MEDINA','E970'],['D_OSA','E970'],['D_COAS','W680'],['D_CCST','W675'],
-  ['D_CAD','E680'],['D_CTEC','W425'],['D_NSTP','W535'],['D_CBA','W442'],['D_ZONE2','W327'],['D_NCEA','E425'],
-  ['D_ARCH','E277'],['D_ZONE1','W210'],['D_OLD_CEA','W127'],['D_HOSTEL','W50'],['D_MEDICINE','E160']
+  ['D_GATE', 'W1530'], ['D_HM_LAB', 'W1435'], ['D_CSG', 'W1300'], ['D_ADMIN', 'W1200'], ['D_GAZEBO', 'W1445'], ['D_COURT', 'E1415'],
+  ['D_CAHS_ANNEX', 'E1435'], ['D_SHOP1', 'W1120'], ['D_SHOP2', 'W1120'], ['D_LIBRARY', 'E1120'], ['D_ZONE4', 'E1230'], ['D_CAHS', 'E1240'],
+  ['D_AUTOMOTIVE', 'W970'], ['D_ZONE3', 'W970'], ['D_MEDINA', 'E970'], ['D_OSA', 'E970'], ['D_COAS', 'W680'], ['D_CCST', 'W675'],
+  ['D_CAD', 'E680'], ['D_CTEC', 'W425'], ['D_NSTP', 'W535'], ['D_CBA', 'W442'], ['D_ZONE2', 'W327'], ['D_NCEA', 'E425'],
+  ['D_ARCH', 'E277'], ['D_ZONE1', 'W210'], ['D_OLD_CEA', 'W127'], ['D_HOSTEL', 'W50'], ['D_MEDICINE', 'E160']
 ].forEach(([d, c]) => addEdge(d, c));
 for (let i = 0; i < wSpine.length - 1; i++) addEdge(wSpine[i], wSpine[i + 1]);
 for (let i = 0; i < eSpine.length - 1; i++) addEdge(eSpine[i], eSpine[i + 1]);
-[['W1530','E1530'],['W1120','E1120'],['W820','E820'],['W535','E535'],['W252','E252'],['W167','E167'],['W88','E88'],['W50','E50']].forEach(([u,v]) => addEdge(u, v));
+[['W1530', 'E1530'], ['W1120', 'E1120'], ['W820', 'E820'], ['W535', 'E535'], ['W252', 'E252'], ['W167', 'E167'], ['W88', 'E88'], ['W50', 'E50']].forEach(([u, v]) => addEdge(u, v));
 
-// =============================================================================
 // SECTION 2: SHORTEST PATH ALGORITHM
-// =============================================================================
 function findShortestRoute(start, end) {
   if (start === end) return { path: [start], distance: 0 };
   const dist = {}, prev = {}, unvisited = new Set(Object.keys(campusGraph));
@@ -113,9 +107,7 @@ function getRouteSteps(path) {
   return steps;
 }
 
-// =============================================================================
 // SECTION 3: MAP & UI CONTROLS
-// =============================================================================
 let currentScale = 1, panX = 0, panY = 0, activeRoute = null, selectedBldg = null;
 
 function drawMap() {
@@ -260,8 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.building-block').forEach(b => {
         const id = b.dataset.id;
         const isEvac = id.startsWith('ZONE');
-        const show = (cat === 'all') || (cat === 'Evacuation Zone' && isEvac) || (cat === 'Facility' && ['GATE','GAZEBO','COURT','LIBRARY','HOSTEL'].includes(id)) ||
-                     (cat === 'Administration' && ['ADMIN','CSG','OSA','NSTP'].includes(id)) || (cat === 'Academic' && !isEvac && !['GATE','GAZEBO','COURT','LIBRARY','HOSTEL','ADMIN','CSG','OSA','NSTP'].includes(id));
+        const show = (cat === 'all') || (cat === 'Evacuation Zone' && isEvac) || (cat === 'Facility' && ['GATE', 'GAZEBO', 'COURT', 'LIBRARY', 'HOSTEL'].includes(id)) ||
+          (cat === 'Administration' && ['ADMIN', 'CSG', 'OSA', 'NSTP'].includes(id)) || (cat === 'Academic' && !isEvac && !['GATE', 'GAZEBO', 'COURT', 'LIBRARY', 'HOSTEL', 'ADMIN', 'CSG', 'OSA', 'NSTP'].includes(id));
         b.style.opacity = show ? '1' : '0.2';
       });
     };
@@ -277,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('fitRouteBtn').onclick = () => {
     const vp = document.getElementById('mapViewport');
     if (!document.fullscreenElement) {
-      if (vp.requestFullscreen) vp.requestFullscreen().catch(() => {});
+      if (vp.requestFullscreen) vp.requestFullscreen().catch(() => { });
     } else {
       if (document.exitFullscreen) document.exitFullscreen();
     }

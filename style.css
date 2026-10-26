@@ -1260,9 +1260,7 @@ body {
   box-shadow: 0 0 6px var(--route-red);
 }
 
-/* ==========================================================================
-   SVG MAP ELEMENTS STYLING (<rect>, <text>, <polyline>, <g>)
-   ========================================================================== */
+/* SVG MAP ELEMENTS STYLING (<rect>, <text>, <polyline>, <g>) */
 
 /* Pedestrian Walkway Corridors */
 .walkway-corridor-spine,
