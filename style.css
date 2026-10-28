@@ -148,6 +148,15 @@ body {
   transform: rotate(5deg) scale(1.05);
 }
 
+.brand-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -1318,9 +1327,15 @@ body {
   user-select: none;
 }
 
-/* Special Buildings */
+/* Special Buildings: Administration & CSG */
+.bldg-admin,
 .bldg-csg {
-  stroke-left: 6px solid var(--bpsu-maroon);
+  fill: #e4e4e7;
+}
+
+.bldg-accent-strip {
+  fill: var(--bpsu-maroon);
+  pointer-events: none;
 }
 
 .bldg-court {

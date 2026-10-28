@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>BPSU Main Campus — Interactive 2D Schematic Campus Map</title>
+  <title>BPSeekU — BPSU Main Campus Guide Map</title>
   <meta name="description"
-    content="Official Bataan Peninsula State University (BPSU) Main Campus Interactive 2D Navigation Map featuring shortest path navigation, building room directory, and emergency evacuation drill routing.">
+    content="BPSeekU — BPSU Main Campus Guide Map featuring shortest path navigation, building room directory, and emergency evacuation drill routing.">
 
   <!-- Modern Typography from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,19 +23,15 @@
   <!-- TOP APPLICATION NAVBAR                                            -->
   <header class="app-header">
     <div class="brand-container">
-      <div class="bpsu-crest-badge" aria-label="BPSU Crest">
-        <svg viewBox="0 0 40 40" width="36" height="36" class="crest-svg">
-          <circle cx="20" cy="20" r="18" fill="#6b141a" stroke="#f59e0b" stroke-width="2.5" />
-          <path d="M20 7 L27 15 L23 15 L23 27 L17 27 L17 15 L13 15 Z" fill="#f59e0b" />
-          <circle cx="20" cy="30" r="2.5" fill="#ffffff" />
-        </svg>
+      <div class="bpsu-crest-badge" aria-label="BPSeekU Crest">
+        <img src="logo.png" alt="BPSeekU Logo" class="brand-logo-img">
       </div>
       <div class="brand-text">
         <div class="brand-title-row">
-          <h1 class="brand-title">BPSU MAIN CAMPUS</h1>
+          <h1 class="brand-title">BPSeekU</h1>
           <span class="edition-badge">CSG GUIDE MAP</span>
         </div>
-        <p class="brand-subtitle">Bataan Peninsula State University • Interactive 2D Navigation & Route Finder</p>
+        <p class="brand-subtitle">BPSU Main Campus Guide Map</p>
       </div>
     </div>
 
@@ -64,7 +60,7 @@
           Search Buildings, Aliases & Rooms
         </label>
         <div class="search-input-wrapper">
-          <input type="search" id="campusSearchInput" placeholder="Search e.g. CICT, CAS, King Sejong, 204, Clinic..."
+          <input type="search" id="campusSearchInput" placeholder="Search e.g. CICT, CAS, BACOMM, King Sejong, 204, Clinic..."
             autocomplete="off" spellcheck="false" aria-label="Search campus buildings and rooms">
           <button id="clearSearchBtn" class="btn-clear-search" title="Clear Search"
             aria-label="Clear Search">&times;</button>
@@ -316,6 +312,14 @@
             <rect x="0" y="0" width="40" height="40" fill="none" stroke="#14b8a6" stroke-width="1"
               stroke-opacity="0.3" />
           </pattern>
+
+          <!-- Clip paths for Admin & CSG Maroon Accent Strips -->
+          <clipPath id="csg-clip">
+            <rect x="80" y="1280" width="170" height="65" rx="8" />
+          </clipPath>
+          <clipPath id="admin-clip">
+            <rect x="80" y="1140" width="170" height="125" rx="8" />
+          </clipPath>
         </defs>
 
         <!-- ROOT TRANSFORM GROUP: Controls Pan & Zoom smoothly -->
@@ -453,7 +457,8 @@
 
             <!-- CSG: x=80, y=1280, w=170, h=65 -->
             <g class="building-block" id="bldg-CSG" data-id="CSG" tabindex="0" role="button" aria-label="CSG Office">
-              <rect x="80" y="1280" width="170" height="65" rx="8" class="bldg-rect bldg-csg" />
+              <rect x="80" y="1280" width="170" height="65" rx="8" class="bldg-rect bldg-csg" fill="#e4e4e7" />
+              <rect x="80" y="1280" width="8" height="65" class="bldg-accent-strip" fill="#6b141a" clip-path="url(#csg-clip)" />
               <text x="165" y="1312" class="bldg-text-code">CSG OFFICE</text>
               <text x="165" y="1328" class="bldg-text-sub">STUDENT GOVERNMENT</text>
             </g>
@@ -461,7 +466,8 @@
             <!-- ADMIN: x=80, y=1140, w=170, h=125 -->
             <g class="building-block" id="bldg-ADMIN" data-id="ADMIN" tabindex="0" role="button"
               aria-label="Admin Bldg.">
-              <rect x="80" y="1140" width="170" height="125" rx="8" class="bldg-rect bldg-admin" />
+              <rect x="80" y="1140" width="170" height="125" rx="8" class="bldg-rect bldg-admin" fill="#e4e4e7" />
+              <rect x="80" y="1140" width="8" height="125" class="bldg-accent-strip" fill="#6b141a" clip-path="url(#admin-clip)" />
               <text x="165" y="1195" class="bldg-text-code">ADMIN BLDG.</text>
               <text x="165" y="1215" class="bldg-text-sub">REGISTRAR • CASHIER</text>
             </g>

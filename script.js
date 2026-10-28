@@ -23,7 +23,7 @@ const campusBuildings = {
   ZONE3: { name: 'Zone 3 Evacuation', desc: 'Evacuation Zone 3 - Central Parade Grounds', rooms: 'Emergency Assembly Area 3 (Medina Grounds)', evac: 'ZONE3', aliases: ['zone 3', 'medina grounds'] },
   MEDINA: { name: 'Medina Building', desc: 'Educational Support Facility (ESF)', rooms: 'Rooms M101-M106, Audio-Visual Room, Social Sciences', evac: 'ZONE3', aliases: ['medina', 'esf'] },
   OSA: { name: 'OSA Building', desc: 'Office of Student Affairs', rooms: 'Guidance & Counseling, Scholarship Unit, Placement Desk', evac: 'ZONE3', aliases: ['osa', 'guidance', 'scholarship'] },
-  COAS: { name: 'COAS (CAS)', desc: 'College of Arts and Sciences (5 Floors)', rooms: 'Rooms 101-108, COMLAB 204, Radio Lab 203, Dance Studio 205, Grad School 304, King Sejong (5th Flr)', evac: 'ZONE3', aliases: ['coas', 'cas', '204', '203', '205', '304', 'king sejong', 'radio lab', 'dance studio'] },
+  COAS: { name: 'COAS (CAS)', desc: 'College of Arts and Sciences (5 Floors)', rooms: 'BACOMM, Rooms 101-108, COMLAB 204, Radio Lab 203, Dance Studio 205, Grad School 304, King Sejong (5th Flr)', evac: 'ZONE3', aliases: ['bacomm', 'ba comm', 'comm', 'coas', 'cas', '204', '203', '205', '304', 'king sejong', 'radio lab', 'dance studio'] },
   CCST: { name: 'CCST (CICT)', desc: 'College of Computer Studies', rooms: 'Cisco Networking Lab, Software Labs 1-2, AI Hub, Rooms C101-C205', evac: 'ZONE2', aliases: ['ccst', 'cict', 'it', 'cs', 'comlab', 'cisco'] },
   CAD: { name: 'CAD Building', desc: 'Computer-Aided Drafting & Design', rooms: 'CAD Workstations, 3D Modeling Lab, Blueprint Plotter Room', evac: 'ZONE2', aliases: ['cad', 'drafting', 'design'] },
   CTEC: { name: 'CTEC Building', desc: 'College of Technology', rooms: 'Electrical Power Lab, Electronics Workbenches, Rooms T201-T206', evac: 'ZONE2', aliases: ['ctec', 'technology', 'electronics'] },
@@ -240,6 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
     sList.querySelectorAll('.search-result-item').forEach(el => {
       el.onclick = () => { const id = el.dataset.id; if (id) { sInput.value = id; sList.hidden = true; selectBuilding(id); } };
     });
+  };
+  sInput.onkeydown = (e) => {
+    if (e.key === 'Enter') {
+      const firstItem = sList.querySelector('.search-result-item[data-id]');
+      if (firstItem) {
+        const id = firstItem.dataset.id;
+        sInput.value = id;
+        sList.hidden = true;
+        selectBuilding(id);
+      }
+    }
   };
   cBtn.onclick = () => { sInput.value = ''; sList.hidden = true; cBtn.style.display = 'none'; };
 
